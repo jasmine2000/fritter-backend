@@ -24,8 +24,10 @@ class FreetCollection {
     const freet = new FreetModel({
       authorId,
       dateCreated: date,
+      originalContent: content,
       content,
-      dateModified: date
+      dateModified: date,
+      likes: []
     });
     await freet.save(); // Saves freet to MongoDB
     return freet.populate('authorId');
@@ -60,6 +62,25 @@ class FreetCollection {
   static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Freet>>> {
     const author = await UserCollection.findOneByUsername(username);
     return FreetModel.find({authorId: author._id}).populate('authorId');
+  }
+
+  /**
+   * Toggle a freet like
+   *
+   * @param {string} freetId - The id of the freet to be updated
+   * @param {string} userId - The id of user liking the freet
+   * @return {Promise<HydratedDocument<Freet>>} - The newly updated freet
+   */
+  static async toggleLike(freetId: Types.ObjectId | string, userId: Types.ObjectId): Promise<HydratedDocument<Freet>> {
+    const freet = await FreetModel.findOne({_id: freetId});
+    if (freet.likes.includes(userId)) {
+      freet.likes = freet.likes.filter(uid => uid.toString() !== userId.toString());
+    } else {
+      freet.likes.push(userId);
+    }
+
+    await freet.save();
+    return freet.populate('authorId');
   }
 
   /**

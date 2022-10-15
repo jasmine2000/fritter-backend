@@ -131,4 +131,28 @@ router.put(
   }
 );
 
+/**
+ * Like a freet
+ *
+ * @name PUT /api/freets/:id/toggleLike
+ *
+ * @return {FreetResponse} - the updated freet
+ * @throws {403} - if the user is not logged in
+ * @throws {404} - If the freetId is not valid
+ */
+router.put(
+  '/:freetId/toggleLike',
+  [
+    userValidator.isUserLoggedIn,
+    freetValidator.isFreetExists
+  ],
+  async (req: Request, res: Response) => {
+    const freet = await FreetCollection.toggleLike(req.params.freetId, req.session.userId);
+    res.status(200).json({
+      message: 'Your freet was liked successfully.',
+      freet: util.constructFreetResponse(freet)
+    });
+  }
+);
+
 export {router as freetRouter};
