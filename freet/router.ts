@@ -28,8 +28,8 @@ const router = express.Router();
 router.get(
   '/',
   async (req: Request, res: Response, next: NextFunction) => {
-    // Check if authorId query parameter was supplied
-    if (req.query.author !== undefined) {
+    // Check if username query parameter was supplied
+    if (req.query.username !== undefined) {
       next();
       return;
     }
@@ -39,10 +39,10 @@ router.get(
     res.status(200).json(response);
   },
   [
-    userValidator.isAuthorExists
+    userValidator.isUserExists
   ],
   async (req: Request, res: Response) => {
-    const authorFreets = await FreetCollection.findAllByUsername(req.query.author as string);
+    const authorFreets = await FreetCollection.findAllByUsername(req.query.username as string);
     const response = authorFreets.map(util.constructFreetResponse);
     res.status(200).json(response);
   }

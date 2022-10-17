@@ -11,8 +11,14 @@ function createLike(fields) {
     .catch(showResponse);
 }
 
+function deleteLike(fields) {
+  fetch(`/api/likes/${fields.postId}`, {method: 'DELETE'})
+    .then(showResponse)
+    .catch(showResponse);
+}
+
 function viewLikesByUser(fields) {
-  fetch(`/api/likes?user=${fields.username}`)
+  fetch(`/api/likes?username=${fields.username}`)
     .then(showResponse)
     .catch(showResponse);
 }

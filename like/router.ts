@@ -10,56 +10,41 @@ import UserCollection from '../user/collection';
 const router = express.Router();
 
 /**
- * Get all likes.
+ * Get all the likes
  *
  * @name GET /api/likes
  *
- * @return {LikeResponse[]} - An array of likes
- *
+ * @return {FreetResponse[]} - A list of all the likes
  */
-router.get(
-  '/',
-  async (req: Request, res: Response) => {
-    const userLikes = await LikeCollection.findAll();
-    const response = userLikes.map(util.constructLikeResponse);
-    res.status(200).json(response);
-  }
-);
-
 /**
  * Get likes by user.
  *
- * @name GET /api/likes?user=username
+ * @name GET /api/likes?username=username
  *
- * @return {LikeResponse[]} - An array of freets created by user with id, authorId
- * @throws {400} - If user is not given
- * @throws {404} - If no user has given username
- *
- */
-router.get(
-  '/',
-  async (req: Request, res: Response) => {
-    const userObj = await UserCollection.findOneByUsername(req.params.username);
-    const userLikes = await LikeCollection.findByUser(userObj.id);
-    const response = userLikes.map(util.constructLikeResponse);
-    res.status(200).json(response);
-  }
-);
-
-/**
- * Get likes by post.
- *
- * @name GET /api/likes/:postId
- *
- * @return {LikeResponse[]} - An array of freets created by user with id, authorId
+ * @return {FreetResponse[]} - An array of freets created by user with id, authorId
  * @throws {400} - If authorId is not given
  * @throws {404} - If no user has given authorId
  *
  */
 router.get(
-  '/:postId',
+  '/',
+  async (req: Request, res: Response, next: NextFunction) => {
+    // Check if username query parameter was supplied'
+    if (req.query.username !== undefined) {
+      next();
+      return;
+    }
+
+    const userLikes = await LikeCollection.findAll();
+    const response = userLikes.map(util.constructLikeResponse);
+    res.status(200).json(response);
+  },
+  [
+    userValidator.isUserExists
+  ],
   async (req: Request, res: Response) => {
-    const userLikes = await LikeCollection.findByPost(req.params.postId);
+    const userObj = await UserCollection.findOneByUsername(req.query.username as string);
+    const userLikes = await LikeCollection.findByUser(userObj.id);
     const response = userLikes.map(util.constructLikeResponse);
     res.status(200).json(response);
   }
@@ -95,20 +80,20 @@ router.post(
 /**
  * Delete a Like
  *
- * @name DELETE /api/likes/:id
+ * @name DELETE /api/likes/:postId
  *
  * @return {string} - A success message
- * @throws {403} - If the user is not logged in or is not the author of
- *                 the freet
- * @throws {404} - If the freetId is not valid
+ * @throws {403} - If the user is not logged in
+ * @throws {404} - If the postId is not valid
  */
 router.delete(
-  '/:likeId?',
+  '/:postId?',
   [
+    userValidator.isUserLoggedIn,
     likeValidator.likeExist
   ],
   async (req: Request, res: Response) => {
-    await LikeCollection.deleteOne(req.params.likeId.toString());
+    await LikeCollection.findAndDeleteOne(req.params.postId, req.session.userId);
     res.status(200).json({
       message: 'Your like was deleted successfully.'
     });

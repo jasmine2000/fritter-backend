@@ -40,6 +40,7 @@ const formsAndHandlers = {
   'edit-freet': editFreet,
   'delete-freet': deleteFreet,
   'like-freet': createLike,
+  'unlike-freet': deleteLike,
   'view-likes-by-user': viewLikesByUser
 };
 

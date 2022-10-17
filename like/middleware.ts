@@ -7,7 +7,7 @@ import UserCollection from '../user/collection';
  * Makes sure like does not exist yet
  */
 const canCreateLike = async (req: Request, res: Response, next: NextFunction) => {
-  const like = await LikeCollection.findLike(req.params.postId, req.session.userId);
+  const like = await LikeCollection.findLike(req.body.postId, req.session.userId);
   if (like) {
     res.status(404).json({
       error: {
@@ -24,7 +24,7 @@ const canCreateLike = async (req: Request, res: Response, next: NextFunction) =>
  * Makes sure like exists
  */
 const likeExist = async (req: Request, res: Response, next: NextFunction) => {
-  const like = await LikeCollection.findOne(req.params.likeId);
+  const like = await LikeCollection.findLike(req.params.postId, req.session.userId);
   if (!like) {
     res.status(404).json({
       error: {

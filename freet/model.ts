@@ -15,7 +15,7 @@ export type Freet = {
   originalContent: string;
   content: string;
   dateModified: Date;
-  // A likes?: Types.ObjectId[];
+  likes?: Types.ObjectId[];
 };
 
 export type PopulatedFreet = {
@@ -25,7 +25,7 @@ export type PopulatedFreet = {
   originalContent: string;
   content: string;
   dateModified: Date;
-  // A likes?: Types.ObjectId[];
+  likes?: Types.ObjectId[];
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -60,6 +60,17 @@ const FreetSchema = new Schema<Freet>({
     required: true
   }
 });
+
+// (virtual-population)
+// Auto-populate a Assignment.submissions field with any submissions are associated with this assignment such that Assignment._id === Submission.assignment._id
+FreetSchema.virtual('likes', {
+  ref: 'Like',
+  localField: '_id',
+  foreignField: 'postId'
+});
+
+FreetSchema.set('toObject', {getters: true});
+FreetSchema.set('toJSON', {getters: true});
 
 const FreetModel = model<Freet>('Freet', FreetSchema);
 export default FreetModel;

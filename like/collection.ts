@@ -25,7 +25,7 @@ class LikeCollection {
       userId
     });
     await like.save();
-    return like;
+    return like.populate('userId');
   }
 
   /**
@@ -56,6 +56,7 @@ class LikeCollection {
    * @return {Promise<HydratedDocument<Freet>> | Promise<null> } - The freet with the given freetId, if any
    */
   static async findByPost(postId: Types.ObjectId | string): Promise<Array<HydratedDocument<Like>>> {
+    console.log(postId);
     return LikeModel.find({postId});
   }
 
@@ -87,6 +88,18 @@ class LikeCollection {
    */
   static async deleteOne(likeId: Types.ObjectId | string): Promise<boolean> {
     const like = LikeModel.deleteOne({_id: likeId});
+    return like !== null;
+  }
+
+  /**
+   * Find a like by postid and userid
+   *
+   * @param {string} postId - The id of the post to like
+   * @param {string} userId - The id of the liker
+   * @return {Promise<HydratedDocument<Freet>> | Promise<null> } - The freet with the given freetId, if any
+   */
+  static async findAndDeleteOne(postId: Types.ObjectId | string, userId: Types.ObjectId | string): Promise<boolean> {
+    const like = await LikeModel.findOneAndDelete({postId, userId});
     return like !== null;
   }
 }
