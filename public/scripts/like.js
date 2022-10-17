@@ -10,3 +10,9 @@ function createLike(fields) {
     .then(showResponse)
     .catch(showResponse);
 }
+
+function viewLikesByUser(fields) {
+  fetch(`/api/likes?user=${fields.username}`)
+    .then(showResponse)
+    .catch(showResponse);
+}

@@ -5,6 +5,7 @@ import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
 import * as likeValidator from '../like/middleware';
 import * as util from './util';
+import UserCollection from '../user/collection';
 
 const router = express.Router();
 
@@ -13,9 +14,7 @@ const router = express.Router();
  *
  * @name GET /api/likes
  *
- * @return {LikeResponse[]} - An array of freets created by user with id, authorId
- * @throws {400} - If authorId is not given
- * @throws {404} - If no user has given authorId
+ * @return {LikeResponse[]} - An array of likes
  *
  */
 router.get(
@@ -30,17 +29,18 @@ router.get(
 /**
  * Get likes by user.
  *
- * @name GET /api/likes/:userId
+ * @name GET /api/likes?user=username
  *
  * @return {LikeResponse[]} - An array of freets created by user with id, authorId
- * @throws {400} - If authorId is not given
- * @throws {404} - If no user has given authorId
+ * @throws {400} - If user is not given
+ * @throws {404} - If no user has given username
  *
  */
 router.get(
-  '/:userId',
+  '/',
   async (req: Request, res: Response) => {
-    const userLikes = await LikeCollection.findByUser(req.params.userId);
+    const userObj = await UserCollection.findOneByUsername(req.params.username);
+    const userLikes = await LikeCollection.findByUser(userObj.id);
     const response = userLikes.map(util.constructLikeResponse);
     res.status(200).json(response);
   }
@@ -71,7 +71,6 @@ router.get(
  * @name POST /api/likes
  *
  * @param {string} postId - post to be liked
- * @param {string} user - user liking
  * @return {LikeResponse} - The created like
  * @throws {403} - If there is a user already logged in
  * @throws {409} - If username is already taken
