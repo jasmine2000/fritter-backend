@@ -29,12 +29,6 @@ function editFreet(fields) {
     .catch(showResponse);
 }
 
-function toggleLikeFreet(fields) {
-  fetch(`/api/freets/${fields.id}/toggleLike`, {method: 'PUT'})
-    .then(showResponse)
-    .catch(showResponse);
-}
-
 function deleteFreet(fields) {
   fetch(`/api/freets/${fields.id}`, {method: 'DELETE'})
     .then(showResponse)

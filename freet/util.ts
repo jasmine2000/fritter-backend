@@ -10,7 +10,6 @@ type FreetResponse = {
   originalContent: string;
   content: string;
   dateModified: string;
-  likes: number;
 };
 
 /**
@@ -36,15 +35,12 @@ const constructFreetResponse = (freet: HydratedDocument<Freet>): FreetResponse =
   };
   const {username} = freetCopy.authorId;
   delete freetCopy.authorId;
-  const likes = freetCopy.likes.length;
-  delete freetCopy.likes;
   return {
     ...freetCopy,
     _id: freetCopy._id.toString(),
     author: username,
     dateCreated: formatDate(freet.dateCreated),
-    dateModified: formatDate(freet.dateModified),
-    likes
+    dateModified: formatDate(freet.dateModified)
   };
 };
 

@@ -65,25 +65,6 @@ class FreetCollection {
   }
 
   /**
-   * Toggle a freet like
-   *
-   * @param {string} freetId - The id of the freet to be updated
-   * @param {string} userId - The id of user liking the freet
-   * @return {Promise<HydratedDocument<Freet>>} - The newly updated freet
-   */
-  static async toggleLike(freetId: Types.ObjectId | string, userId: Types.ObjectId): Promise<HydratedDocument<Freet>> {
-    const freet = await FreetModel.findOne({_id: freetId});
-    if (freet.likes.includes(userId)) {
-      freet.likes = freet.likes.filter(uid => uid.toString() !== userId.toString());
-    } else {
-      freet.likes.push(userId);
-    }
-
-    await freet.save();
-    return freet.populate('authorId');
-  }
-
-  /**
    * Update a freet with the new content
    *
    * @param {string} freetId - The id of the freet to be updated
