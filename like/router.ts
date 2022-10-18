@@ -14,16 +14,16 @@ const router = express.Router();
  *
  * @name GET /api/likes
  *
- * @return {FreetResponse[]} - A list of all the likes
+ * @return {FreetResponse[]} - A array of all the likes
  */
 /**
  * Get likes by user.
  *
  * @name GET /api/likes?username=username
  *
- * @return {FreetResponse[]} - An array of freets created by user with id, authorId
- * @throws {400} - If authorId is not given
- * @throws {404} - If no user has given authorId
+ * @return {FreetResponse[]} - An array of likes created by user with username
+ * @throws {400} - If username is not given
+ * @throws {404} - If no user has given username
  *
  */
 router.get(
@@ -58,8 +58,7 @@ router.get(
  * @param {string} postId - post to be liked
  * @return {LikeResponse} - The created like
  * @throws {403} - If there is a user already logged in
- * @throws {409} - If username is already taken
- * @throws {400} - If password or username is not in correct format
+ * @throws {404} - If the post does not exist
  *
  */
 router.post(
@@ -84,7 +83,7 @@ router.post(
  *
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in
- * @throws {404} - If the postId is not valid
+ * @throws {404} - If the postId is invalid or has not been liked
  */
 router.delete(
   '/:postId?',

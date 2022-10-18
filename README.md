@@ -313,3 +313,125 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - `403` if the user is not logged in
+
+#### `GET /api/likes` - Get likes
+
+**Returns**
+
+- An array of all likes
+
+#### `GET /api/likes?username=USERNAME` - Get likes created by user
+
+**Returns**
+
+- An array of all likes created by user with `username`
+
+**Throws**
+
+- `400` if the username is not given
+- `404` if no user has given username
+
+#### `POST /api/likes` - Create a new like
+
+**Body**
+
+- `postId` _{string}_ - The id of post to be liked
+
+**Returns**
+
+- A success message
+- A object with the created like
+
+**Throws**
+
+- `403` If the user is not logged in
+- `404` If the post does not exist
+
+#### `DELETE /api/likes` - Delete like
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the postId is invalid or has not been liked
+
+#### `POST /api/follow` - Create follow
+
+**Body**
+
+- `userid` _{string}_ - The id of user to follow
+
+**Returns**
+
+- A success message
+- A object with the created follow
+
+**Throws**
+
+- `403` If the user is not logged in
+- `404` If the other user does not exist
+
+#### `DELETE /api/follow/:userId` - Delete follow
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` If the other user does not exist or is not followed
+
+#### `GET /api/collections?user=USERNAME` - Get Collections by user
+
+**Returns**
+
+- An array of collections created by user with username `username`
+
+**Throws**
+
+- `400` if `username` is not given
+- `404` if `username` is not a recognized username of any user
+
+#### `POST /api/collections` - Create an Collection
+
+**Body**
+
+- `title` _{string}_ - The name of collection
+
+**Returns**
+
+- A success message
+- An object with the created user's details (without password)
+
+**Throws**
+
+- `403` if user is not logged in
+- `400` if collection title is empty
+- `409` if collection title is already used
+
+#### `PUT /api/collections/:collectionId/?postId=postId` - Add Freet to Collection
+
+**Returns**
+
+- A success message
+- An object with the updated collection info
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if collection or post does not exist
+
+#### `DELETE /api/collections/:collectionId` - Delete Collection
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if collection does not exist
