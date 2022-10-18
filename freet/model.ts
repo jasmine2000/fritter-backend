@@ -62,7 +62,7 @@ const FreetSchema = new Schema<Freet>({
 });
 
 // (virtual-population)
-// Auto-populate a Assignment.submissions field with any submissions are associated with this assignment such that Assignment._id === Submission.assignment._id
+// Auto-populate a Freet.likes
 FreetSchema.virtual('likes', {
   ref: 'Like',
   localField: '_id',

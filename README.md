@@ -373,6 +373,7 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` If the user is not logged in
 - `404` If the other user does not exist
+- `409` If the other user is already followed
 
 #### `DELETE /api/follow/:userId` - Delete follow
 

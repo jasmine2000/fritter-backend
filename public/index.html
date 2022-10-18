@@ -8,6 +8,7 @@
   <script src="/scripts/freet.js"></script>
   <script src="/scripts/user.js"></script>
   <script src="/scripts/like.js"></script>
+  <script src="/scripts/follow.js"></script>
   <script src="/scripts/index.js"></script>
 </head>
 
@@ -144,6 +145,24 @@
             <input id="username" name="username">
           </div>
           <input type="submit" value="Get Likes By User">
+        </form>
+
+        <form id="follow-user">
+          <h3>Follow User</h3>
+          <div>
+            <label for="userId">User ID:</label>
+            <input id="userId" name="userId">
+          </div>
+          <input type="submit" value="Follow User">
+        </form>
+
+        <form id="unfollow-user">
+          <h3>Unfollow User</h3>
+          <div>
+            <label for="userId">User ID:</label>
+            <input id="userId" name="userId">
+          </div>
+          <input type="submit" value="Unfollow User">
         </form>
 
       </div>
