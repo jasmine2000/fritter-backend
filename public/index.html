@@ -9,6 +9,7 @@
   <script src="/scripts/user.js"></script>
   <script src="/scripts/like.js"></script>
   <script src="/scripts/follow.js"></script>
+  <script src="/scripts/collection.js"></script>
   <script src="/scripts/index.js"></script>
 </head>
 
@@ -163,6 +164,59 @@
             <input id="userId" name="userId">
           </div>
           <input type="submit" value="Unfollow User">
+        </form>
+
+        <form id="view-user-collections">
+          <h3>View User's Collections</h3>
+          <div>
+            <label for="username">Username:</label>
+            <input id="username" name="username">
+          </div>
+          <input type="submit" value="View Collections">
+        </form>
+
+        <form id="create-collection">
+          <h3>Create Collection</h3>
+          <div>
+            <label for="title">Title:</label>
+            <input id="title" name="title">
+          </div>
+          <input type="submit" value="Create Collection">
+        </form>
+
+        <form id="remove-collection">
+          <h3>Remove Collection</h3>
+          <div>
+            <label for="title">Title:</label>
+            <input id="title" name="title">
+          </div>
+          <input type="submit" value="Remove Collection">
+        </form>
+
+        <form id="add-freet-to-collection">
+          <h3>Add Freet to Collection</h3>
+          <div>
+            <label for="title">Collection Title:</label>
+            <input id="title" name="title">
+          </div>
+          <div>
+            <label for="freetId">Freet ID:</label>
+            <input id="freetId" name="freetId">
+          </div>
+          <input type="submit" value="Add to Collection">
+        </form>
+
+        <form id="remove-freet-from-collection">
+          <h3>Remove Freet From Collection</h3>
+          <div>
+            <label for="title">Collection Title:</label>
+            <input id="title" name="title">
+          </div>
+          <div>
+            <label for="freetId">Freet ID:</label>
+            <input id="freetId" name="freetId">
+          </div>
+          <input type="submit" value="Remove Freet From Collection">
         </form>
 
       </div>
