@@ -1,5 +1,4 @@
 import type {HydratedDocument} from 'mongoose';
-import moment from 'moment';
 import type {Like} from './model';
 
 type LikeResponse = {

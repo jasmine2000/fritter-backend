@@ -1,7 +1,5 @@
 import type {Request, Response, NextFunction} from 'express';
-import {Types} from 'mongoose';
 import LikeCollection from './collection';
-import UserCollection from '../user/collection';
 
 /**
  * Makes sure like does not exist yet

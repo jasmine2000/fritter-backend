@@ -23,7 +23,7 @@ class UserCollection {
 
     const user = new UserModel({username, password, dateJoined});
     await user.save(); // Saves user to MongoDB
-    return user.populate(['followers', 'following']);
+    return user.populate(['followers', 'following', 'collections']);
   }
 
   /**
@@ -33,7 +33,7 @@ class UserCollection {
    * @return {Promise<HydratedDocument<User>> | Promise<null>} - The user with the given username, if any
    */
   static async findOneByUserId(userId: Types.ObjectId | string): Promise<HydratedDocument<User>> {
-    return UserModel.findOne({_id: userId}).populate(['followers', 'following']);
+    return UserModel.findOne({_id: userId}).populate(['followers', 'following', 'collections']);
   }
 
   /**
@@ -43,7 +43,7 @@ class UserCollection {
    * @return {Promise<HydratedDocument<User>> | Promise<null>} - The user with the given username, if any
    */
   static async findOneByUsername(username: string): Promise<HydratedDocument<User>> {
-    return UserModel.findOne({username: new RegExp(`^${username.trim()}$`, 'i')}).populate(['followers', 'following']);
+    return UserModel.findOne({username: new RegExp(`^${username.trim()}$`, 'i')}).populate(['followers', 'following', 'collections']);
   }
 
   /**
@@ -57,7 +57,7 @@ class UserCollection {
     return UserModel.findOne({
       username: new RegExp(`^${username.trim()}$`, 'i'),
       password
-    }).populate(['followers', 'following']);
+    }).populate(['followers', 'following', 'collections']);
   }
 
   /**
@@ -78,7 +78,7 @@ class UserCollection {
     }
 
     await user.save();
-    return user.populate(['followers', 'following']);
+    return user.populate(['followers', 'following', 'collections']);
   }
 
   /**

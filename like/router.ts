@@ -1,11 +1,10 @@
 import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
+import UserCollection from '../user/collection';
 import LikeCollection from './collection';
 import * as userValidator from '../user/middleware';
-import * as freetValidator from '../freet/middleware';
 import * as likeValidator from '../like/middleware';
 import * as util from './util';
-import UserCollection from '../user/collection';
 
 const router = express.Router();
 

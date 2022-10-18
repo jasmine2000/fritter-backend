@@ -22,3 +22,9 @@ function viewLikesByUser(fields) {
     .then(showResponse)
     .catch(showResponse);
 }
+
+function viewLikes(fields) {
+  fetch('/api/likes')
+    .then(showResponse)
+    .catch(showResponse);
+}

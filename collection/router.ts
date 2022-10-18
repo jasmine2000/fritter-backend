@@ -2,7 +2,6 @@ import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
 import CollectionCollection from './collection';
 import * as userValidator from '../user/middleware';
-import * as freetValidator from '../freet/middleware';
 import * as collectionValidator from './middleware';
 import * as util from './util';
 
@@ -82,32 +81,6 @@ router.put(
     });
   }
 );
-
-// /**
-//  * Remove Freet from Collection
-//  *
-//  * @name DELETE /api/collections/:collection
-//  *
-//  * @param {string} freetId - the freetId to remove
-//  * @return {CollectionResponse} - the updated collection
-//  * @throws {403} - if the user is not logged in or does not own collection with name
-//  * @throws {404} - If the freetId is not in the collection
-//  */
-// router.delete(
-//   '/:title?',
-//   [
-//     userValidator.isUserLoggedIn,
-//     collectionValidator.collectionExists,
-//     collectionValidator.freetInCollection
-//   ],
-//   async (req: Request, res: Response) => {
-//     const collection = await CollectionCollection.removeFreet(req.params.title, req.session.userId, req.body.freetId);
-//     res.status(200).json({
-//       message: 'Your freet was removed from Collection.',
-//       collection: util.constructCollectionResponse(collection)
-//     });
-//   }
-// );
 
 /**
  * Delete Collection

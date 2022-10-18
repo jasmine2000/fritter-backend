@@ -1,7 +1,6 @@
 import type {HydratedDocument, Types} from 'mongoose';
 import type {Like} from './model';
 import LikeModel from './model';
-import UserCollection from '../user/collection';
 
 /**
  * This files contains a class that has the functionality to explore freets

@@ -14,8 +14,9 @@ const router = express.Router();
  *
  * @param {string} userId - user to follow
  * @return {FollowResponse} - The created like
- * @throws {403} - If there is a user already logged in
- * @throws {404} - If the post does not exist
+ * @throws {403} - If the user is not logged in
+ * @throws {404} - If the other user does not exist
+ * @throws {409} - If the other user is already followed
  *
  */
 router.post(

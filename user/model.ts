@@ -14,6 +14,7 @@ export type User = {
   dateJoined: Date;
   following?: Types.ObjectId[];
   followers?: Types.ObjectId[];
+  collections?: Types.ObjectId[];
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -46,6 +47,11 @@ UserSchema.virtual('followers', {
   ref: 'Follow',
   localField: '_id',
   foreignField: 'followedId'
+});
+UserSchema.virtual('collections', {
+  ref: 'Collection',
+  localField: '_id',
+  foreignField: 'ownerId'
 });
 
 UserSchema.set('toObject', {getters: true});

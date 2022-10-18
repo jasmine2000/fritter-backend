@@ -175,6 +175,8 @@ The following api routes have already been implemented for you (**Make sure to d
 
 This renders the `index.html` file that will be used to interact with the backend
 
+### Freets
+
 #### `GET /api/freets` - Get all the freets
 
 **Returns**
@@ -239,6 +241,8 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not the author of the freet
 - `400` if the new freet content is empty or a stream of empty spaces
 - `413` if the new freet content is more than 140 characters long
+
+### Users
 
 #### `POST /api/users/session` - Sign in user
 
@@ -314,6 +318,8 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` if the user is not logged in
 
+### Likes
+
 #### `GET /api/likes` - Get likes
 
 **Returns**
@@ -347,7 +353,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` If the user is not logged in
 - `404` If the post does not exist
 
-#### `DELETE /api/likes` - Delete like
+#### `DELETE /api/likes/:postId` - Delete like
 
 **Returns**
 
@@ -356,7 +362,9 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - `403` if the user is not logged in
-- `404` if the postId is invalid or has not been liked
+- `404` if the postId is invalid or has not been liked by logged in user
+
+### Follow
 
 #### `POST /api/follow` - Create follow
 
@@ -386,6 +394,8 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not logged in
 - `404` If the other user does not exist or is not followed
 
+### Collections
+
 #### `GET /api/collections?user=USERNAME` - Get Collections by user
 
 **Returns**
@@ -397,7 +407,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `400` if `username` is not given
 - `404` if `username` is not a recognized username of any user
 
-#### `POST /api/collections` - Create an Collection
+#### `POST /api/collections` - Create a Collection
 
 **Body**
 
@@ -412,21 +422,42 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` if user is not logged in
 - `400` if collection title is empty
-- `409` if collection title is already used
+- `409` if collection title is already used by user
 
-#### `PUT /api/collections/:collectionId/?postId=postId` - Add Freet to Collection
+#### `PUT /api/collections/:title` - Add Freet to Collection
+
+**Body**
+
+- `postId` _{string}_ - The postId of post to add
 
 **Returns**
 
 - A success message
-- An object with the updated collection info
+- An object with the updated collection
 
 **Throws**
 
-- `403` if the user is not logged in
+- `403` if the user is not logged in or does not own collection with name `title`
 - `404` if collection or post does not exist
+- `409` if the post is already in the collection
 
-#### `DELETE /api/collections/:collectionId` - Delete Collection
+#### `DELETE /api/collections/:title` - Remove Freet from Collection
+
+**Body**
+
+- `postId` _{string}_ - The postId of post to remove
+
+**Returns**
+
+- A success message
+- An object with the updated collection
+
+**Throws**
+
+- `403` if the user is not logged in or does not own collection with name `title`
+- `404` if post is not in the collection
+
+#### `DELETE /api/collections/:title` - Delete Collection
 
 **Returns**
 
@@ -434,5 +465,4 @@ This renders the `index.html` file that will be used to interact with the backen
 
 **Throws**
 
-- `403` if the user is not logged in
-- `404` if collection does not exist
+- `403` if the user is not logged in or does not own collection with name `title`

@@ -1,5 +1,4 @@
 import type {Request, Response, NextFunction} from 'express';
-import type {Types} from 'mongoose';
 import FreetCollection from '../freet/collection';
 import CollectionCollection from './collection';
 
@@ -7,6 +6,15 @@ import CollectionCollection from './collection';
  * Checks that collection with given title and owner Id does not exist (req.body)
  */
 const collectionNotExists = async (req: Request, res: Response, next: NextFunction) => {
+  if (!req.body.title) {
+    res.status(400).json({
+      error: {
+        freetNotFound: 'Collection title is empty.'
+      }
+    });
+    return;
+  }
+
   const collection = await CollectionCollection.findCollection(req.body.title, req.session.userId);
   if (collection) {
     res.status(409).json({

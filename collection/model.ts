@@ -1,6 +1,5 @@
 import type {Types, PopulatedDoc, Document} from 'mongoose';
 import {Schema, model} from 'mongoose';
-import type {User} from '../user/model';
 
 // Type definition for Freet on the backend
 export type Collection = {
