@@ -53,11 +53,21 @@ class FollowCollection {
    *
    * @param {string} postId - The id of the post to like
    * @param {string} userId - The id of the liker
-   * @return {Promise<HydratedDocument<Follow>> | Promise<null> } - The freet with the given freetId, if any
+   * @return {Promise<Boolean>} - true if the follow has been deleted, false otherwise
    */
   static async findAndDeleteOne(followerId: Types.ObjectId | string, followedId: Types.ObjectId | string): Promise<boolean> {
     const follow = await FollowModel.findOneAndDelete({followerId, followedId});
     return follow !== null;
+  }
+
+  /**
+   * Delete all follows that include a user
+   *
+   * @param {string} userId - The id of the liker
+   */
+  static async deleteUser(userId: Types.ObjectId | string): Promise<void> {
+    await FollowModel.deleteMany({followerId: userId});
+    await FollowModel.deleteMany({followedId: userId});
   }
 }
 

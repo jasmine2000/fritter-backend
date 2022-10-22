@@ -1,6 +1,7 @@
 import type {HydratedDocument, Types} from 'mongoose';
 import type {Collection} from './model';
 import UserCollection from '../user/collection';
+import FreetCollection from '../freet/collection';
 import CollectionModel from './model';
 
 /**
@@ -30,13 +31,26 @@ class CollectionCollection {
   }
 
   /**
+   * Filter Posts in Collection
+   *
+   * @param {string} collectionId - The id of the collection to filter posts for
+   */
+  static async filter(collectionId: Types.ObjectId | string): Promise<void> {
+    const collection = await CollectionModel.findOne({_id: collectionId});
+    const posts = await Promise.all(collection.posts.map(async postId => FreetCollection.findOne(postId)));
+    collection.posts = posts.filter(post => post).map(post => post._id);
+  }
+
+  /**
    * Find a collection by collectionId
    *
    * @param {string} collectionId - The id of the collection to find
    * @return {Promise<HydratedDocument<Collection>> | Promise<null> } - The freet with the given freetId, if any
    */
   static async findOne(collectionId: Types.ObjectId | string): Promise<HydratedDocument<Collection>> {
-    return CollectionModel.findOne({_id: collectionId});
+    const collection = await CollectionModel.findOne({_id: collectionId});
+    await CollectionCollection.filter(collection._id);
+    return collection;
   }
 
   /**
@@ -47,7 +61,9 @@ class CollectionCollection {
    * @return {Promise<HydratedDocument<Collection>>} - The collection
    */
   static async findCollection(title: string, ownerId: Types.ObjectId | string): Promise<HydratedDocument<Collection>> {
-    return CollectionModel.findOne({title, ownerId});
+    const collection = await CollectionModel.findOne({title, ownerId});
+    await CollectionCollection.filter(collection._id);
+    return collection;
   }
 
   /**
@@ -58,7 +74,9 @@ class CollectionCollection {
    */
   static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Collection>>> {
     const owner = await UserCollection.findOneByUsername(username);
-    return CollectionModel.find({ownerId: owner._id});
+    const collections = await CollectionModel.find({ownerId: owner._id});
+    await Promise.all(collections.map(async collection => CollectionCollection.filter(collection._id))); // Filter all
+    return collections;
   }
 
   /**
@@ -101,6 +119,15 @@ class CollectionCollection {
   static async findAndDelete(title: string, ownerId: Types.ObjectId | string): Promise<boolean> {
     const collection = await CollectionModel.findOneAndDelete({title, ownerId});
     return collection !== null;
+  }
+
+  /**
+   * Delete collections with ownerId
+   *
+   * @param {string} ownerId - The id of the owner of the collection
+   */
+  static async deleteUser(ownerId: Types.ObjectId | string): Promise<void> {
+    await CollectionModel.deleteMany({ownerId});
   }
 }
 

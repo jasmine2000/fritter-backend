@@ -1,3 +1,5 @@
+import CollectionCollection from '../collection/collection';
+import FollowCollection from '../follow/collection';
 import type {HydratedDocument, Types} from 'mongoose';
 import type {User} from './model';
 import UserModel from './model';
@@ -23,6 +25,8 @@ class UserCollection {
 
     const user = new UserModel({username, password, dateJoined});
     await user.save(); // Saves user to MongoDB
+
+    await CollectionCollection.create('Likes', user._id);
     return user.populate(['followers', 'following', 'collections']);
   }
 
@@ -89,6 +93,8 @@ class UserCollection {
    */
   static async deleteOne(userId: Types.ObjectId | string): Promise<boolean> {
     const user = await UserModel.deleteOne({_id: userId});
+    await FollowCollection.deleteUser(userId);
+    await CollectionCollection.deleteUser(userId);
     return user !== null;
   }
 }

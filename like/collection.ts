@@ -1,3 +1,4 @@
+import CollectionCollection from '../collection/collection';
 import type {HydratedDocument, Types} from 'mongoose';
 import type {Like} from './model';
 import LikeModel from './model';
@@ -24,6 +25,7 @@ class LikeCollection {
       userId
     });
     await like.save();
+    await CollectionCollection.addFreet('Likes', userId, postId);
     return like.populate('userId');
   }
 
@@ -80,18 +82,7 @@ class LikeCollection {
   }
 
   /**
-   * Find a likes by id
-   *
-   * @param {string} likeId - The id of the like to find
-   * @return {Promise<HydratedDocument<Freet>> | Promise<null> } - The freet with the given freetId, if any
-   */
-  static async deleteOne(likeId: Types.ObjectId | string): Promise<boolean> {
-    const like = LikeModel.deleteOne({_id: likeId});
-    return like !== null;
-  }
-
-  /**
-   * Find a like by postid and userid
+   * Find and delete like by postid and userid
    *
    * @param {string} postId - The id of the post to like
    * @param {string} userId - The id of the liker
@@ -99,7 +90,17 @@ class LikeCollection {
    */
   static async findAndDeleteOne(postId: Types.ObjectId | string, userId: Types.ObjectId | string): Promise<boolean> {
     const like = await LikeModel.findOneAndDelete({postId, userId});
+    await CollectionCollection.removeFreet('Likes', userId, postId);
     return like !== null;
+  }
+
+  /**
+   * Delete likes by postid
+   *
+   * @param {string} postId - The id of the post to delete likes for
+   */
+  static async deleteFreet(postId: Types.ObjectId | string): Promise<void> {
+    await LikeModel.deleteMany({postId});
   }
 }
 
