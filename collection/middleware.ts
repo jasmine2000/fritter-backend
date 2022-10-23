@@ -1,4 +1,5 @@
 import type {Request, Response, NextFunction} from 'express';
+import {Types} from 'mongoose';
 import FreetCollection from '../freet/collection';
 import CollectionCollection from './collection';
 
@@ -49,7 +50,8 @@ const collectionExists = async (req: Request, res: Response, next: NextFunction)
  * Checks that freet exists and is not yet in collection
  */
 const freetNotInCollection = async (req: Request, res: Response, next: NextFunction) => {
-  const freet = await FreetCollection.findOne(req.body.freetId);
+  const validFormat = Types.ObjectId.isValid(req.body.freetId);
+  const freet = validFormat ? await FreetCollection.findOne(req.body.freetId) : '';
   if (!freet) {
     res.status(404).json({
       error: {

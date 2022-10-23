@@ -30,7 +30,7 @@ class FollowCollection {
   /**
    * Find a follow by id
    *
-   * @param {string} followId - The id of the like to find
+   * @param {string} followId - The id of the follow to find
    * @return {Promise<HydratedDocument<Follow>> | Promise<null> } - The freet with the given freetId, if any
    */
   static async findOne(followId: Types.ObjectId | string): Promise<Array<HydratedDocument<Follow>>> {

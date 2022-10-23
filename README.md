@@ -103,6 +103,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not the author of the freet
 - `400` if the new freet content is empty or a stream of empty spaces
 - `413` if the new freet content is more than 140 characters long
+- `413` if the new freet content is more than 10 character adds/deletes/replaces more than the original content
 
 ### Users
 
@@ -214,6 +215,7 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` If the user is not logged in
 - `404` If the post does not exist
+- `409` If the user has already liked the post
 
 #### `DELETE /api/likes/:postId` - Delete like
 
@@ -223,8 +225,9 @@ This renders the `index.html` file that will be used to interact with the backen
 
 **Throws**
 
-- `403` if the user is not logged in
-- `404` if the postId is invalid or has not been liked by logged in user
+- `403` If the user is not logged in
+- `404` If the post does not exist
+- `409` If the user has not liked the post
 
 ### Follow
 

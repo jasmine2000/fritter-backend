@@ -1,4 +1,5 @@
 import type {Request, Response, NextFunction} from 'express';
+import {Types} from 'mongoose';
 import UserCollection from '../user/collection';
 import FollowCollection from './collection';
 
@@ -6,7 +7,8 @@ import FollowCollection from './collection';
  * Makes sure other user exists
  */
 const followedExists = async (req: Request, res: Response, next: NextFunction) => {
-  const user = await UserCollection.findOneByUserId(req.body.userId);
+  const validFormat = Types.ObjectId.isValid(req.body.userId);
+  const user = validFormat ? await UserCollection.findOneByUserId(req.body.userId) : '';
   if (!user) {
     res.status(404).json({
       error: {

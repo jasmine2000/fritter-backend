@@ -48,6 +48,7 @@ router.delete(
   '/:userId?',
   [
     userValidator.isUserLoggedIn,
+    followValidator.followedExists,
     followValidator.followObjExist
   ],
   async (req: Request, res: Response) => {

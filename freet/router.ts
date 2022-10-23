@@ -120,7 +120,8 @@ router.put(
     userValidator.isUserLoggedIn,
     freetValidator.isFreetExists,
     freetValidator.isValidFreetModifier,
-    freetValidator.isValidFreetContent
+    freetValidator.isValidFreetContent,
+    freetValidator.isValidEditedFreet
   ],
   async (req: Request, res: Response) => {
     const freet = await FreetCollection.updateOne(req.params.freetId, req.body.content);

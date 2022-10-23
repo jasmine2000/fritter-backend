@@ -56,14 +56,16 @@ router.get(
  *
  * @param {string} postId - post to be liked
  * @return {LikeResponse} - The created like
- * @throws {403} - If there is a user already logged in
+ * @throws {403} - If the user is not logged in
  * @throws {404} - If the post does not exist
+ * @throws {409} - If the user already liked the post
  *
  */
 router.post(
   '/',
   [
     userValidator.isUserLoggedIn,
+    likeValidator.isPostExists,
     likeValidator.canCreateLike
   ],
   async (req: Request, res: Response) => {
@@ -82,12 +84,14 @@ router.post(
  *
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in
- * @throws {404} - If the postId is invalid or has not been liked
+ * @throws {404} - If the postId is invalid
+ * @throws {409} - If the user has not liked the post
  */
 router.delete(
   '/:postId?',
   [
     userValidator.isUserLoggedIn,
+    likeValidator.isPostExists,
     likeValidator.likeExist
   ],
   async (req: Request, res: Response) => {
