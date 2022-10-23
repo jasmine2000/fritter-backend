@@ -1,5 +1,6 @@
 import CollectionCollection from '../collection/collection';
 import FollowCollection from '../follow/collection';
+import LikeCollection from '../like/collection';
 import type {HydratedDocument, Types} from 'mongoose';
 import type {User} from './model';
 import UserModel from './model';
@@ -95,6 +96,7 @@ class UserCollection {
     const user = await UserModel.deleteOne({_id: userId});
     await FollowCollection.deleteUser(userId);
     await CollectionCollection.deleteUser(userId);
+    await LikeCollection.deleteUser(userId);
     return user !== null;
   }
 }
