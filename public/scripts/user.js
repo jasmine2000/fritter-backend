@@ -3,6 +3,12 @@
  * e.g. for createUser, fields has properites 'username' and 'password'
  */
 
+function getUser(fields) {
+  fetch('/api/users/session', {method: 'GET'})
+    .then(showResponse)
+    .catch(showResponse);
+}
+
 function createUser(fields) {
   fetch('/api/users', {method: 'POST', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
     .then(showResponse)
@@ -10,13 +16,13 @@ function createUser(fields) {
 }
 
 function changeUsername(fields) {
-  fetch('/api/users', {method: 'PUT', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
+  fetch('/api/users', {method: 'PATCH', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
     .then(showResponse)
     .catch(showResponse);
 }
 
 function changePassword(fields) {
-  fetch('/api/users', {method: 'PUT', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
+  fetch('/api/users', {method: 'PATCH', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
     .then(showResponse)
     .catch(showResponse);
 }

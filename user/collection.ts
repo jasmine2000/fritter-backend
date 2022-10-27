@@ -1,9 +1,9 @@
-import CollectionCollection from '../collection/collection';
-import FollowCollection from '../follow/collection';
-import LikeCollection from '../like/collection';
 import type {HydratedDocument, Types} from 'mongoose';
 import type {User} from './model';
 import UserModel from './model';
+import CollectionCollection from '../collection/collection';
+import FollowCollection from '../follow/collection';
+import LikeCollection from '../like/collection';
 
 /**
  * This file contains a class with functionality to interact with users stored
@@ -26,7 +26,6 @@ class UserCollection {
 
     const user = new UserModel({username, password, dateJoined});
     await user.save(); // Saves user to MongoDB
-
     await CollectionCollection.create('Likes', user._id);
     return user.populate(['followers', 'following', 'collections']);
   }
@@ -72,14 +71,14 @@ class UserCollection {
    * @param {Object} userDetails - An object with the user's updated credentials
    * @return {Promise<HydratedDocument<User>>} - The updated user
    */
-  static async updateOne(userId: Types.ObjectId | string, userDetails: any): Promise<HydratedDocument<User>> {
+  static async updateOne(userId: Types.ObjectId | string, userDetails: {password?: string; username?: string}): Promise<HydratedDocument<User>> {
     const user = await UserModel.findOne({_id: userId});
     if (userDetails.password) {
-      user.password = userDetails.password as string;
+      user.password = userDetails.password;
     }
 
     if (userDetails.username) {
-      user.username = userDetails.username as string;
+      user.username = userDetails.username;
     }
 
     await user.save();

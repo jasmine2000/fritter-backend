@@ -18,11 +18,11 @@ const router = express.Router();
 /**
  * Get freets by author.
  *
- * @name GET /api/freets?authorId=id
+ * @name GET /api/freets?author=username
  *
- * @return {FreetResponse[]} - An array of freets created by user with id, authorId
- * @throws {400} - If authorId is not given
- * @throws {404} - If no user has given authorId
+ * @return {FreetResponse[]} - An array of freets created by user with username, author
+ * @throws {400} - If author is not given
+ * @throws {404} - If no user has given author
  *
  */
 router.get(
@@ -104,7 +104,7 @@ router.delete(
 /**
  * Modify a freet
  *
- * @name PUT /api/freets/:id
+ * @name PATCH /api/freets/:id
  *
  * @param {string} content - the new content for the freet
  * @return {FreetResponse} - the updated freet
@@ -114,7 +114,7 @@ router.delete(
  * @throws {400} - If the freet content is empty or a stream of empty spaces
  * @throws {413} - If the freet content is more than 140 characters long
  */
-router.put(
+router.patch(
   '/:freetId?',
   [
     userValidator.isUserLoggedIn,
